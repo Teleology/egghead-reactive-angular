@@ -1,5 +1,6 @@
 import { Project } from './../../projects/project.model';
-
+import { ProjectsActions, ProjectsActionTypes } from './projects.actions';
+import { EntityState } from '@ngrx/entity';
 const initialProjects: Project[] = [
   {
     id: '1',
@@ -34,10 +35,15 @@ const updateProject = (projects, project) => projects.map(p => {
 const deleteProject = (projects, project) => projects.filter(w => project.id !== w.id);
 
 
-export interface ProjectsState {
-  projects: Project[];
+// export interface ProjectsState {
+//   projects: Project[];
+//   selectedProjectId: string | null;
+// }
+
+export interface ProjectsState extends EntityState<Project> {
   selectedProjectId: string | null;
 }
+
 
 export const initialState: ProjectsState = {
   projects: initialProjects,
@@ -46,25 +52,25 @@ export const initialState: ProjectsState = {
 
 export function projectsReducer(state = initialState, action): ProjectsState {
   switch (action.type) {
-    case 'select': {
+    case ProjectsActionTypes.ProjectSelected: {
       return {
         ...state,
         selectedProjectId: action.payload
       }
     }
-    case 'create': {
+    case ProjectsActionTypes.AddProject: {
       return {
         ...state,
         projects: createProject(state.projects, action.payload)
       }
     }
-    case 'update': {
+    case ProjectsActionTypes.UpdateProject: {
       return {
         ...state,
         projects: updateProject(state.projects, action.payload)
       }
     }
-    case 'delete': {
+    case ProjectsActionTypes.DeleteProject: {
       return {
         ...state,
         projects: deleteProject(state.projects, action.payload)
