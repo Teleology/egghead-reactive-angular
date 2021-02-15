@@ -9,8 +9,6 @@ import {
   ProjectsState, AddProject, UpdateProject, DeleteProject, LoadProject, selectAllProjects
 } from '@workshop/core-data';
 import { select, Store } from '@ngrx/store';
-import { map, pluck } from 'rxjs/operators';
-import { initialProjects } from '../../../../../libs/core-data/src/lib/state/projects/projects.reducer';
 
 const emptyProject: Project = {
   id: null,
@@ -32,7 +30,6 @@ export class ProjectsComponent implements OnInit {
   currentProject: Project;
 
   constructor(
-    private projectsService: ProjectsService,
     private customerService: CustomersService,
     private store: Store<ProjectsState>,
     private ns: NotificationsService) {
@@ -64,7 +61,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects() {
-    this.store.dispatch(new LoadProject(initialProjects));
+    this.store.dispatch(new LoadProject());
     // this.projects$ = this.projectsService.all();
   }
 

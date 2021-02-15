@@ -3,10 +3,14 @@ import { Project } from '@workshop/core-data';
 
 export enum ProjectsActionTypes {
   ProjectSelected = '[Projects] Selected',
-  LoadProject = '[Projects] Load Project',
+  LoadProject = '[Projects] Load Data',
+  ProjectsLoaded = '[Projects] Data Loaded',
   AddProject = '[Projects] Add Data',
+  ProjectAdded = '[Projects] Data Added',
   UpdateProject = '[Projects] Update Data',
-  DeleteProject = '[Projects] Delete Data'
+  ProjectUpdated = '[Projects] Data Updated ',
+  DeleteProject = '[Projects] Delete Data',
+  ProjectDeleted = '[Projects] Data deleted'
 }
 
 export class SelectProject implements Action {
@@ -17,7 +21,13 @@ export class SelectProject implements Action {
 
 export class LoadProject implements Action {
   public readonly type = ProjectsActionTypes.LoadProject;
-  constructor(private payload: Project[]) {
+  constructor() {
+  }
+}
+
+export class ProjectsLoaded implements Action {
+  readonly type = ProjectsActionTypes.ProjectsLoaded;
+  constructor(public payload: Project[]) {
   }
 }
 
@@ -26,15 +36,35 @@ export class AddProject implements Action {
   constructor(private payload: Project) {
   }
 }
+
+export class ProjectAdded implements Action {
+  public readonly type = ProjectsActionTypes.ProjectAdded;
+  constructor(private payload: Project) {
+  }
+}
+
 export class UpdateProject implements Action {
   public readonly type = ProjectsActionTypes.UpdateProject;
   constructor(private payload: Project) {
   }
 }
+
+export class ProjectUpdated implements Action {
+  public readonly type = ProjectsActionTypes.ProjectUpdated;
+  constructor(private payload: Project) {
+  }
+}
+
 export class DeleteProject implements Action {
   public readonly type = ProjectsActionTypes.DeleteProject;
   constructor(private payload: Project) {
   }
 }
+export class ProjectDeleted implements Action {
+  public readonly type = ProjectsActionTypes.ProjectDeleted;
+  constructor(private payload: Project) {
+  }
+}
 
-export type ProjectsActions = SelectProject | AddProject | UpdateProject | DeleteProject | LoadProject;
+
+export type ProjectsActions = SelectProject | AddProject | ProjectAdded |UpdateProject | ProjectUpdated |DeleteProject | ProjectDeleted|LoadProject | ProjectsLoaded;

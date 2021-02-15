@@ -56,9 +56,10 @@ export function projectsReducer(state = initialState, action): ProjectsState {
         selectedProjectId: action.payload
       }
     }
-    case ProjectsActionTypes.LoadProject: {
+    case ProjectsActionTypes.ProjectsLoaded: {
       return adapter.addMany(action.payload, state);
     }
+
     case ProjectsActionTypes.AddProject: {
       return adapter.addOne(action.payload, state);
     }
