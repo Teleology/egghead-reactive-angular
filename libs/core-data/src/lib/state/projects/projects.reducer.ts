@@ -72,3 +72,11 @@ export function projectsReducer(state = initialState, action): ProjectsState {
       return state;
   }
 }
+
+export const getSelectedProjectid = (state: ProjectsState) => state.selectedProjectId;
+
+const { selectIds, selectEntities, selectAll } = adapter.getSelectors();
+
+export const selectProjectIds = selectIds;
+export const selectProjectsEntities = selectEntities;
+export const selectAllProjects = selectAll;
