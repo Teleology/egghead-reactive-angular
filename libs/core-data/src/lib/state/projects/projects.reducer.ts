@@ -1,7 +1,7 @@
 import { Project } from './../../projects/project.model';
 import { ProjectsActions, ProjectsActionTypes } from './projects.actions';
-import { EntityState } from '@ngrx/entity';
-const initialProjects: Project[] = [
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+export const initialProjects: Project[] = [
   {
     id: '1',
     title: 'Project One',
@@ -44,11 +44,9 @@ export interface ProjectsState extends EntityState<Project> {
   selectedProjectId: string | null;
 }
 
+export const adapter: EntityAdapter<Project> = createEntityAdapter<Project>();
 
-export const initialState: ProjectsState = {
-  projects: initialProjects,
-  selectedProjectId: null
-}
+export const initialState: ProjectsState = adapter.getInitialState({selectedProjectId: null});
 
 export function projectsReducer(state = initialState, action): ProjectsState {
   switch (action.type) {
@@ -58,23 +56,17 @@ export function projectsReducer(state = initialState, action): ProjectsState {
         selectedProjectId: action.payload
       }
     }
+    case ProjectsActionTypes.LoadProject: {
+      return adapter.addMany(action.payload, state);
+    }
     case ProjectsActionTypes.AddProject: {
-      return {
-        ...state,
-        projects: createProject(state.projects, action.payload)
-      }
+      return adapter.addOne(action.payload, state);
     }
     case ProjectsActionTypes.UpdateProject: {
-      return {
-        ...state,
-        projects: updateProject(state.projects, action.payload)
-      }
+      return adapter.upsertOne(action.payload, state);
     }
     case ProjectsActionTypes.DeleteProject: {
-      return {
-        ...state,
-        projects: deleteProject(state.projects, action.payload)
-      }
+      return adapter.removeOne(action.payload, state);
     }
     default:
       return state;

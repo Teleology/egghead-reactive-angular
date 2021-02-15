@@ -6,10 +6,11 @@ import {
   ProjectsService,
   NotificationsService,
   CustomersService,
-  ProjectsState, AddProject, UpdateProject, DeleteProject
+  ProjectsState, AddProject, UpdateProject, DeleteProject, LoadProject
 } from '@workshop/core-data';
 import { select, Store } from '@ngrx/store';
-import { pluck } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
+import { initialProjects } from '../../../../../libs/core-data/src/lib/state/projects/projects.reducer';
 
 const emptyProject: Project = {
   id: null,
@@ -37,7 +38,8 @@ export class ProjectsComponent implements OnInit {
     private ns: NotificationsService) {
     this.projects$ = store.pipe(
       select('projects'),
-      pluck('projects')
+      pluck('entities'),
+      map(data => Object.keys(data).map(k => data[k]))
     )
   }
 
@@ -64,6 +66,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getProjects() {
+    this.store.dispatch(new LoadProject(initialProjects));
     // this.projects$ = this.projectsService.all();
   }
 
@@ -80,7 +83,7 @@ export class ProjectsComponent implements OnInit {
     // this.projectsService.create(project)
     //   .subscribe(response => {
         this.ns.emit('Project created!');
-        this.getProjects();
+        // this.getProjects();
         // this.resetCurrentProject();
       // });
   }
@@ -90,17 +93,17 @@ export class ProjectsComponent implements OnInit {
     // this.projectsService.update(project)
     //   .subscribe(response => {
         this.ns.emit('Project saved!');
-        this.getProjects();
+        // this.getProjects();
         // this.resetCurrentProject();
       // });
   }
 
   deleteProject(project) {
-    this.store.dispatch(new DeleteProject(project));
+    this.store.dispatch(new DeleteProject(project.id));
     // this.projectsService.delete(project)
     //   .subscribe(response => {
         this.ns.emit('Project deleted!');
-        this.getProjects();
+        // this.getProjects();
         // this.resetCurrentProject();
       // });
   }
